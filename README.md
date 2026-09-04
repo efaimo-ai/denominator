@@ -326,12 +326,12 @@ grade A (100)   0 errors  0 warnings  0 info
 
 $ npx efaimo weigh ./denominator
   skill                        metadata      body  lines  refs
-  denominator                        65       839     83  2 files 1,906
+  denominator                        65       936     94  2 files 1,906
 
-totals: metadata 65 (always loaded) | body 839 (on trigger) | referenced 1,906 (on demand)
+totals: metadata 65 (always loaded) | body 936 (on trigger) | referenced 1,906 (on demand)
 ```
 
-Captured from `efaimo@0.4.0` on 2026-09-04.
+Captured from `efaimo@0.5.0` on 2026-09-04.
 
 **65 tokens sit in your context whether or not this skill ever fires.** That is
 the number this skill's own family measures, so it is the number to be honest
