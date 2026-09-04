@@ -90,3 +90,14 @@ no ability to fail is still worthless.
 
 - `references/failures.md` - the taxonomy, each entry with a case that happened
 - `references/deriving.md` - how to get an expected count that cannot agree with the bug
+
+<!-- generated:siblings -->
+
+## Siblings
+
+Every skill in this set is about a report that was true about the wrong thing. The set: https://efaimo.ai/skills
+
+- `red-before-green` - first make sure the check can fail at all; the right denominator on a check that cannot go red is still worthless.
+- `claim-sweep` - when a scope shrank because a fact moved and something stopped matching it.
+
+<!-- /generated:siblings -->
