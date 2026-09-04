@@ -1,2 +1,7 @@
 node_modules/
 *.log
+.DS_Store
+
+# npm pack leaves one of these behind when a run is interrupted, and the CI step
+# that installs from a packed tarball creates one on every run.
+*.tgz
