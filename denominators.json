@@ -1,0 +1,8 @@
+{
+  "blessed": "2026-09-04",
+  "why": "the fixture's two scopes, so CI proves the tool can ratchet something",
+  "counts": {
+    "every route answers": 7,
+    "no em or en dash in maintained copy": 12
+  }
+}

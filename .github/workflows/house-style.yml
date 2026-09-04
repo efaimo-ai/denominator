@@ -1,0 +1,20 @@
+name: house-style
+# The one house rule here: ASCII hyphen only, no em or en dash in any text.
+# There is no build to hang it off, so it runs on its own. A byte scan, because
+# a decode is where a dash check goes blind.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  dashes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+      - run: node scripts/check-house-style.mjs

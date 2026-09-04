@@ -1,0 +1,53 @@
+{
+  "name": "denominator",
+  "version": "0.1.0",
+  "description": "A passing check has a denominator. Print it, derive it, and fail when it moves.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "author": "efaimo ai (https://efaimo.ai)",
+  "homepage": "https://efaimo.ai/skills",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/efaimo-ai/denominator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/efaimo-ai/denominator/issues"
+  },
+  "keywords": [
+    "testing",
+    "ci",
+    "coverage",
+    "assertions",
+    "linter",
+    "regression",
+    "ratchet",
+    "agent-skills",
+    "verification"
+  ],
+  "bin": {
+    "denominator": "bin/denominator.mjs"
+  },
+  "exports": {
+    ".": "./src/index.mjs",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "bin",
+    "src",
+    "SKILL.md",
+    "references",
+    "NOTICE"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "house-style": "node scripts/check-house-style.mjs",
+    "selftest": "node bin/denominator.mjs -- node test/fixtures/emitter.mjs"
+  },
+  "publishConfig": {
+    "provenance": true,
+    "access": "public"
+  }
+}

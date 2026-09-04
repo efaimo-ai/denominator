@@ -1,0 +1,33 @@
+name: ci
+# There is no build here and no dependency to install, so CI is exactly the two
+# gates that can fail: the tests, and the one house rule. Both run on the two
+# Node versions this package claims to support in `engines`, because claiming a
+# range and testing one point of it is the failure this org names `denominator`.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node: [20, 24]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: ${{ matrix.node }}
+      # Windows is in the matrix on purpose and not for symmetry: the one bug
+      # this package shipped with was a Windows-only spawn through a shell that
+      # concatenated an unquoted path. A POSIX-only matrix would have been green.
+      - run: node --test test/*.test.mjs
+      - run: node scripts/check-house-style.mjs
+      # The tool, on itself. If `denominator` cannot ratchet its own fixture it
+      # has no business ratcheting anyone else's check.
+      - run: node bin/denominator.mjs -- node test/fixtures/emitter.mjs

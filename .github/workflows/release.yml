@@ -1,0 +1,58 @@
+name: release
+# The whole release on a v*.*.* tag: publish to npm with provenance via OIDC
+# Trusted Publishing, then cut the GitHub Release. No secret is involved and
+# nothing here should be done by hand.
+#
+# Do NOT run `gh release create` locally. GitHub attributes a release to whoever
+# created it, so a hand-cut release stamps the operator's personal account onto
+# a public page that cannot be edited afterwards.
+on:
+  push:
+    tags: ["v*.*.*"]
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # cut the Release
+      id-token: write # OIDC trusted publishing + provenance
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+      - run: node --test test/*.test.mjs
+      - run: node scripts/check-house-style.mjs
+      # OIDC trusted publishing needs npm >= 11.5.1 and the runner may bundle an
+      # older 11.x. Pinned exactly, not `@latest`: this runs in the job that holds
+      # id-token: write, so whatever the registry served that minute would execute
+      # next to the publish credentials.
+      - run: npm install -g npm@11.19.0
+      # Tag-gated. A dispatch run must never become a live publish just because
+      # the version in package.json happens to be unpublished that day.
+      - run: npm publish --provenance --access public
+        if: startsWith(github.ref, 'refs/tags/v')
+      - run: npm publish --dry-run
+        if: github.event_name == 'workflow_dispatch'
+
+      - name: cut the GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            echo "release $GITHUB_REF_NAME already exists; leaving it alone"
+            exit 0
+          fi
+          awk -v v="${GITHUB_REF_NAME#v}" '
+            $0 ~ "^## \\[" v "\\]" { f = 1; next }
+            f && (/^## \[/ || /^\[[^]]*\]: http/) { exit }
+            f { print }
+          ' CHANGELOG.md > "$RUNNER_TEMP/notes.md"
+          if grep -q '[^[:space:]]' "$RUNNER_TEMP/notes.md"; then
+            gh release create "$GITHUB_REF_NAME" --title "denominator $GITHUB_REF_NAME" --notes-file "$RUNNER_TEMP/notes.md"
+          else
+            gh release create "$GITHUB_REF_NAME" --title "denominator $GITHUB_REF_NAME" --generate-notes
+          fi
