@@ -23,7 +23,7 @@ jobs:
         with:
           node-version: 24
           registry-url: https://registry.npmjs.org
-      - run: node --test test/*.test.mjs
+      - run: node --test
       - run: node scripts/check-house-style.mjs
       # OIDC trusted publishing needs npm >= 11.5.1 and the runner may bundle an
       # older 11.x. Pinned exactly, not `@latest`: this runs in the job that holds

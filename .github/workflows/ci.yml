@@ -26,8 +26,8 @@ jobs:
       # Windows is in the matrix on purpose and not for symmetry: the one bug
       # this package shipped with was a Windows-only spawn through a shell that
       # concatenated an unquoted path. A POSIX-only matrix would have been green.
-      - run: node --test test/*.test.mjs
+      - run: node --test
       - run: node scripts/check-house-style.mjs
       # The tool, on itself. If `denominator` cannot ratchet its own fixture it
       # has no business ratcheting anyone else's check.
-      - run: node bin/denominator.mjs -- node test/fixtures/emitter.mjs
+      - run: node bin/denominator.mjs -- node fixtures/emitter.mjs

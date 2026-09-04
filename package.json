@@ -42,9 +42,9 @@
     "node": ">=20"
   },
   "scripts": {
-    "test": "node --test test/*.test.mjs",
+    "test": "node --test",
     "house-style": "node scripts/check-house-style.mjs",
-    "selftest": "node bin/denominator.mjs -- node test/fixtures/emitter.mjs"
+    "selftest": "node bin/denominator.mjs -- node fixtures/emitter.mjs"
   },
   "publishConfig": {
     "provenance": true,

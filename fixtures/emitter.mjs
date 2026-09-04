@@ -5,7 +5,7 @@
 // Environment knobs exist so the CLI tests can move a scope without editing a
 // file: DENOM_FIXTURE_ROUTES, DENOM_FIXTURE_FILES, DENOM_FIXTURE_DROP,
 // DENOM_FIXTURE_EXIT, DENOM_FIXTURE_MALFORMED.
-import { declare } from "../../src/index.mjs";
+import { declare } from "../src/index.mjs";
 
 const routes = Number(process.env.DENOM_FIXTURE_ROUTES ?? 7);
 const files = Number(process.env.DENOM_FIXTURE_FILES ?? 12);

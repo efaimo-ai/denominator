@@ -11,7 +11,7 @@ import { fileURLToPath } from "node:url";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const BIN = join(HERE, "..", "bin", "denominator.mjs");
-const FIXTURE = join(HERE, "fixtures", "emitter.mjs");
+const FIXTURE = join(HERE, "..", "fixtures", "emitter.mjs");
 
 function run(args, { env = {}, cwd } = {}) {
   const dir = cwd ?? mkdtempSync(join(tmpdir(), "denom-"));
