@@ -306,9 +306,9 @@ grade A (100)   0 errors  0 warnings  0 info
 
 $ npx efaimo weigh ./denominator
   skill                        metadata      body  lines  refs
-  denominator                        65       839     83  -
+  denominator                        65       839     83  2 files 1,906
 
-totals: metadata 65 (always loaded) | body 839 (on trigger) | referenced 0 (on demand)
+totals: metadata 65 (always loaded) | body 839 (on trigger) | referenced 1,906 (on demand)
 ```
 
 Captured from `efaimo@0.4.0` on 2026-09-04.
