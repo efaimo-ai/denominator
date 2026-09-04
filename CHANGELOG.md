@@ -4,20 +4,25 @@ All notable changes to denominator are documented here. Format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); this project uses
 [Semantic Versioning](https://semver.org/).
 
-## [0.1.0] - 2026-09-04
+## [Unreleased]
 
-> **Published without provenance, and only this version.** The `v0.1.0` tag
-> fired the release workflow and npm answered `404 PUT /denominator`: trusted
-> publishing is configured from an existing package's settings page, so it
-> cannot create a package that has never been published. This version was
-> therefore published from an authenticated session, which cannot mint an OIDC
-> attestation, and there is no GitHub Release for it because cutting one by hand
-> stamps an operator's personal account onto a page that cannot be edited later.
-> From 0.1.1 the workflow takes both back.
+> **Not published yet.** This entry describes what is on `main` and is
+> dated when it ships. The first publish of `denominator` cannot carry provenance:
+> npm's trusted publishing is configured from an existing package's settings
+> page, so it cannot create a package that has never been published, and the
+> authenticated session that can create one cannot mint an OIDC attestation.
+> From the version after that the release workflow owns it and every release
+> carries SLSA provenance naming the commit that built it. Install it from the
+> repository in the meantime; the README carries the command.
 
 First release. A skill and a CLI for the same idea: a check that passes reports
 a numerator, and the denominator it found that numerator over is rarely printed
 and rarely stable.
+
+The `v0.1.0` tag exists and fired the release workflow on 2026-09-04; npm
+answered `404 PUT /denominator`, which is the failure described above and not a
+transient one. The tag stays where it is and the entry above stays open until a
+publish actually lands.
 
 ### Added
 
@@ -57,4 +62,4 @@ and rarely stable.
   `error`, so the direct child's close arrived before the retry produced
   anything and the run was judged on an empty capture. The retry is now latched.
 
-[0.1.0]: https://github.com/efaimo-ai/denominator/releases/tag/v0.1.0
+[Unreleased]: https://github.com/efaimo-ai/denominator/commits/main

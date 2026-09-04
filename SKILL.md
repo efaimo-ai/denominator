@@ -54,9 +54,14 @@ a scope that grew from 34 to 38 and then broke back to 34 satisfies any floor
 of 34, and that is exactly how a real regression hides.
 
 ```sh
+npm i -D github:efaimo-ai/denominator   # not on npm yet; this is the install
 npx denominator --bless --why "first baseline" -- node check.mjs
-npx denominator -- node check.mjs      # exit 1 when a scope moves
+npx denominator -- node check.mjs       # exit 1 when a scope moves
 ```
+
+The tool is optional. The wire format is one `printf` and the ratchet is a
+committed JSON file, so a project that does not want a dependency can implement
+both in an afternoon; the discipline is the part that matters.
 
 ## Six ways a green check lies about its scope
 

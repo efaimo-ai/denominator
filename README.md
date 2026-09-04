@@ -2,7 +2,6 @@
 
 **A passing check has a denominator. Print it, derive it, and fail when it moves.**
 
-[![npm](https://img.shields.io/npm/v/denominator?color=0b7285&label=npm)](https://www.npmjs.com/package/denominator)
 [![license](https://img.shields.io/badge/license-Apache--2.0-0b7285)](LICENSE)
 [![node](https://img.shields.io/badge/node-%3E%3D20-0b7285)](package.json)
 [![dependencies](https://img.shields.io/badge/dependencies-0-0b7285)](package.json)
@@ -77,28 +76,37 @@ the output only ever described the numerator.
 
 ## Install
 
+Not on npm yet, so both forms name the repository:
+
 ```sh
-npx denominator --help          # no install
-npm i -D denominator            # or as a dev dependency
+npx -y github:efaimo-ai/denominator --help    # run it once, install nothing
+npm i -D github:efaimo-ai/denominator         # or put it in a project
 ```
 
+Every example below writes `npx denominator`, which is what you type after the
+second line: `npx` finds the local binary in `node_modules/.bin` before it asks
+the registry. Once the package is published the first line shortens to
+`npx denominator` too, and nothing else on this page changes.
+
 <details>
-<summary>0.1.0 has no provenance, and every version after it will</summary>
+<summary>Why it is not on npm yet, and what the v0.1.0 tag is doing there</summary>
 
 npm's trusted publishing is configured from an existing package's settings page,
 so it cannot create a package that has never been published. The `v0.1.0` tag
 fired the release workflow on 2026-09-04 and npm answered
 `404 Not Found - PUT https://registry.npmjs.org/denominator`: not a permissions
-failure, an ordering one.
+failure, an ordering one. The first publish has to come from an authenticated
+session, and that session cannot mint an OIDC attestation, so the first version
+on npm will be the only one without provenance and every version after it will
+have one.
 
-So 0.1.0 was published from an authenticated session instead, which cannot mint
-an OIDC attestation. From 0.1.1 the workflow takes it back and every release
-carries SLSA provenance naming the commit that built it.
+The tag is still there and the release is still not cut, which is the honest
+state and not an oversight: cutting a GitHub Release by hand stamps an
+operator's personal account onto a public page that cannot be edited afterwards,
+so the workflow does it or nobody does.
 
 Saying so here is cheaper than having someone find a missing attestation and
-wonder what else is missing. There is no GitHub Release for 0.1.0 either: cutting
-one by hand stamps an operator's personal account onto a public page that cannot
-be edited afterwards, so the workflow does it or nobody does.
+wonder what else is missing.
 
 </details>
 
@@ -318,27 +326,31 @@ project's siblings are graded by:
 
 ```
 $ npx efaimo check --skill ./denominator
-efaimo v0.4.0
+efaimo v0.5.0
 check skill  denominator
 grade A (100)   0 errors  0 warnings  0 info
 
   no findings. clean.
 
 $ npx efaimo weigh ./denominator
-  skill                        metadata      body  lines  refs
-  denominator                        65       936     94  2 files 1,906
+efaimo v0.5.0
+weigh skills  ./denominator   1 skill
 
-totals: metadata 65 (always loaded) | body 936 (on trigger) | referenced 1,906 (on demand)
+  skill                        metadata      body  lines  refs
+  denominator                        65     1,011     99  2 files 1,906
+
+totals: metadata 65 (always loaded) | body 1,011 (on trigger) | referenced 1,906 (on demand)
 ```
 
-Captured from `efaimo@0.5.0` on 2026-09-04.
+Captured from `efaimo@0.5.0` on 2026-09-04. The only edit is the absolute path
+`weigh` echoes back, replaced with the relative one that was typed.
 
 **65 tokens sit in your context whether or not this skill ever fires.** That is
 the number this skill's own family measures, so it is the number to be honest
 about: it is the lightest of the seven skills efaimo ai publishes, and it is
-still above the median of 39 across the public corpus efaimo indexes. The
-description is long because a host selects skills by matching descriptions to
-tasks, and that trade is a choice, not an accident.
+still well above the corpus median of 38.5 across the 36 public skills efaimo
+indexes. The description is long because a host selects skills by matching
+descriptions to tasks, and that trade is a choice, not an accident.
 
 Tests: 31, over the library and the spawned binary.
 
@@ -370,7 +382,7 @@ ever fires.
 
 ```mermaid
 flowchart LR
-    N["npx denominator"] --> D[/".claude/skills/denominator/"/]
+    N["cp SKILL.md .claude/skills/denominator/"] --> D[/".claude/skills/denominator/"/]
     D --> M["frontmatter<br/><b>every session, always</b>"]
     D --> B["SKILL.md body<br/><i>only when it triggers</i>"]
     D --> R["references/<br/><i>only if the agent reads them</i>"]
@@ -384,7 +396,7 @@ flowchart LR
 ```
 
 In this skill's case, measured by [efaimo](https://github.com/efaimo-ai/efaimo) `weigh` (v0.5.0, 2026-09-04):
-**65 tokens always resident**, 936 when it triggers, 1,906 across 2 reference files if the agent reads to the end.
+**65 tokens always resident**, 1,011 when it triggers, 1,906 across 2 reference files if the agent reads to the end.
 
 <!-- /generated:pipeline -->
 
