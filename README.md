@@ -2,7 +2,7 @@
 
 **A passing check has a denominator. Print it, derive it, and fail when it moves.**
 
-[![npm](https://img.shields.io/badge/npm-not%20published%20yet-a16700)](#install)
+[![npm](https://img.shields.io/npm/v/denominator?color=0b7285&label=npm)](https://www.npmjs.com/package/denominator)
 [![license](https://img.shields.io/badge/license-Apache--2.0-0b7285)](LICENSE)
 [![node](https://img.shields.io/badge/node-%3E%3D20-0b7285)](package.json)
 [![dependencies](https://img.shields.io/badge/dependencies-0-0b7285)](package.json)
@@ -77,40 +77,30 @@ the output only ever described the numerator.
 
 ## Install
 
-**This is not on npm yet.** Run it from the repository, which needs nothing
-installed and no clone:
-
 ```sh
-npx -y github:efaimo-ai/denominator --help
-npx -y github:efaimo-ai/denominator -- node check.mjs
+npx denominator --help          # no install
+npm i -D denominator            # or as a dev dependency
 ```
 
-`npm i -D denominator` and the shorter `npx denominator` will work once the
-package is published. They are written that way in the examples below because
-that is what they will be; today, substitute the GitHub form above.
-
 <details>
-<summary>Why it is not published yet</summary>
+<summary>0.1.0 has no provenance, and every version after it will</summary>
 
-Everything is ready: the repository, CI on four Node and OS combinations, and a
-release workflow that publishes with SLSA provenance over OIDC on a `v*.*.*`
-tag. The tag fired on 2026-09-04 and npm answered
-`404 Not Found - PUT https://registry.npmjs.org/denominator`.
+npm's trusted publishing is configured from an existing package's settings page,
+so it cannot create a package that has never been published. The `v0.1.0` tag
+fired the release workflow on 2026-09-04 and npm answered
+`404 Not Found - PUT https://registry.npmjs.org/denominator`: not a permissions
+failure, an ordering one.
 
-That is not a permissions failure, it is an ordering one. npm's trusted
-publishing is configured from an existing package's settings page, so it cannot
-create a package that has never been published. The first publish has to come
-from an authenticated session, and only after that can the workflow take over.
+So 0.1.0 was published from an authenticated session instead, which cannot mint
+an OIDC attestation. From 0.1.1 the workflow takes it back and every release
+carries SLSA provenance naming the commit that built it.
 
-Which means the first version will carry no provenance and every version after
-it will. Saying so here is cheaper than having someone discover it from a
-missing attestation.
+Saying so here is cheaper than having someone find a missing attestation and
+wonder what else is missing. There is no GitHub Release for 0.1.0 either: cutting
+one by hand stamps an operator's personal account onto a public page that cannot
+be edited afterwards, so the workflow does it or nobody does.
 
 </details>
-
-This section is the annotation, and it comes off in the commit before the tag
-that publishes. That rule is a skill of its own:
-[`unreleased-guard`](https://github.com/efaimo-ai/unreleased-guard).
 
 ## Quickstart
 
