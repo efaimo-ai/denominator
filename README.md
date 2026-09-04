@@ -79,14 +79,25 @@ the output only ever described the numerator.
 Not on npm yet, so both forms name the repository:
 
 ```sh
-npx -y github:efaimo-ai/denominator --help    # run it once, install nothing
-npm i -D github:efaimo-ai/denominator         # or put it in a project
+npx -y --allow-git=all github:efaimo-ai/denominator --help   # run it, install nothing
+npm i -D --allow-git=all github:efaimo-ai/denominator        # or put it in a project
 ```
 
 Every example below writes `npx denominator`, which is what you type after the
 second line: `npx` finds the local binary in `node_modules/.bin` before it asks
-the registry. Once the package is published the first line shortens to
-`npx denominator` too, and nothing else on this page changes.
+the registry. That part needs no flag and works on npm 11 and 12 alike.
+
+`--allow-git=all` is on the two lines above because **npm 12 refuses git specs
+by default** and answers `EALLOWGIT`, and a narrower `--allow-git=<spec>` is
+refused too. Nobody should enjoy typing it: it switches off a protection npm
+added on purpose. It is here because the alternative is a command that does not
+run, and it goes away the moment this package is on npm, where `npx denominator`
+needs no flag on either major.
+
+Both lines were run end to end against npm 11.6.2 and npm 12.0.2 on 2026-09-05.
+The bare form, without the flag, was published here on 2026-09-04 and fails on
+12 - it was checked once, on the npm that happened to be installed, and shipped
+as though that were every npm.
 
 <details>
 <summary>Why it is not on npm yet, and what the v0.1.0 tag is doing there</summary>
@@ -337,9 +348,9 @@ efaimo v0.5.0
 weigh skills  ./denominator   1 skill
 
   skill                        metadata      body  lines  refs
-  denominator                        65     1,011     99  2 files 1,906
+  denominator                        65     1,012     99  2 files 1,906
 
-totals: metadata 65 (always loaded) | body 1,011 (on trigger) | referenced 1,906 (on demand)
+totals: metadata 65 (always loaded) | body 1,012 (on trigger) | referenced 1,906 (on demand)
 ```
 
 Captured from `efaimo@0.5.0` on 2026-09-04. The only edit is the absolute path
@@ -396,7 +407,7 @@ flowchart LR
 ```
 
 In this skill's case, measured by [efaimo](https://github.com/efaimo-ai/efaimo) `weigh` (v0.5.0, 2026-09-04):
-**65 tokens always resident**, 1,011 when it triggers, 1,906 across 2 reference files if the agent reads to the end.
+**65 tokens always resident**, 1,012 when it triggers, 1,906 across 2 reference files if the agent reads to the end.
 
 <!-- /generated:pipeline -->
 

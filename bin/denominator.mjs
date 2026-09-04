@@ -58,9 +58,22 @@ if (has("--version")) {
   console.log(JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8")).version);
   process.exit(0);
 }
-if (has("--help") || has("-h") || !cmd.length) {
+// Asking for help is not a usage error. Both print the same text and they exit
+// differently on purpose: `--help` is a request that succeeded, a bare
+// invocation is a caller who gave nothing to run.
+//
+// This used to be `exit(cmd.length ? 0 : 2)`, so `denominator --help` exited 2
+// and `denominator --help -- node x` exited 0, which is backwards: the flag was
+// ignored and the exit code described the arguments instead of the request. It
+// breaks `denominator --help && echo ok` and any CI step that smoke-tests a
+// binary that way.
+if (has("--help") || has("-h")) {
   process.stdout.write(HELP);
-  process.exit(cmd.length ? 0 : 2);
+  process.exit(0);
+}
+if (!cmd.length) {
+  process.stdout.write(HELP);
+  process.exit(2);
 }
 
 const baselinePath = resolve(opt("--baseline", "denominators.json"));

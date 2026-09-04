@@ -147,3 +147,22 @@ test("a broken baseline is exit 2, so it cannot read as agreement", () => {
   assert.match(r.out, /not valid JSON/);
   rmSync(dir, { recursive: true, force: true });
 });
+
+// `--help` is a request, not a usage error.
+//
+// It exited 2 until 2026-09-05, because one line decided the code from whether
+// a command followed rather than from whether help was asked for: `--help`
+// alone exited 2 and `--help -- node x` exited 0. Backwards, and it breaks
+// `denominator --help && echo ok`, which is how a binary gets smoke-tested.
+test("--help is exit 0, a bare invocation is exit 2, both print the help", () => {
+  const asked = run(["--help"]);
+  assert.equal(asked.status, 0, asked.out);
+  assert.match(asked.stdout, /usage:/);
+
+  const short = run(["-h"]);
+  assert.equal(short.status, 0, short.out);
+
+  const bare = run([]);
+  assert.equal(bare.status, 2, bare.out);
+  assert.match(bare.stdout, /usage:/);
+});

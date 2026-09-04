@@ -54,7 +54,7 @@ a scope that grew from 34 to 38 and then broke back to 34 satisfies any floor
 of 34, and that is exactly how a real regression hides.
 
 ```sh
-npm i -D github:efaimo-ai/denominator   # not on npm yet; this is the install
+npm i -D --allow-git=all github:efaimo-ai/denominator   # not on npm yet
 npx denominator --bless --why "first baseline" -- node check.mjs
 npx denominator -- node check.mjs       # exit 1 when a scope moves
 ```
