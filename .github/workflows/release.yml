@@ -32,8 +32,28 @@ jobs:
       - run: npm install -g npm@11.19.0
       # Tag-gated. A dispatch run must never become a live publish just because
       # the version in package.json happens to be unpublished that day.
-      - run: npm publish --provenance --access public
+      #
+      # And skipped when the registry already holds this version, rather than
+      # failing. This repo is where that was learned: the `v0.1.0` tag fired
+      # this workflow on 2026-09-04 and npm answered 404 because trusted
+      # publishing cannot create a package that has never existed. The first
+      # publish comes from an authenticated session and the tag follows it, so
+      # without this check the tag push would then get a 403 for republishing.
+      # The GitHub Release below is what the tag is for at that point.
+      - name: publish, unless the registry already has this version
         if: startsWith(github.ref, 'refs/tags/v')
+        shell: bash
+        run: |
+          set -euo pipefail
+          name=$(node -p "require('./package.json').name")
+          version=$(node -p "require('./package.json').version")
+          if npm view "$name@$version" version >/dev/null 2>&1; then
+            echo "$name@$version is already on the registry; not republishing."
+            echo "denominator: versions published by this run n=0"
+            exit 0
+          fi
+          npm publish --provenance --access public
+          echo "denominator: versions published by this run n=1"
       - run: npm publish --dry-run
         if: github.event_name == 'workflow_dispatch'
 
