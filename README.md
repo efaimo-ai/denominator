@@ -360,6 +360,34 @@ only for a bare command name, with a command line it quoted itself.
 
 ---
 
+<!-- generated:pipeline -->
+
+## What installing it does to a session
+
+A skill is not free just because it is markdown. Its frontmatter is loaded at
+the start of every session for every skill you have installed, whether or not it
+ever fires.
+
+```mermaid
+flowchart LR
+    N["npx denominator"] --> D[/".claude/skills/denominator/"/]
+    D --> M["frontmatter<br/><b>every session, always</b>"]
+    D --> B["SKILL.md body<br/><i>only when it triggers</i>"]
+    D --> R["references/<br/><i>only if the agent reads them</i>"]
+    M --> S(["your context window"])
+    B -.->|"on trigger"| S
+    R -.->|"on demand"| S
+    classDef always fill:#c9282822,stroke:#c92828,stroke-width:1px;
+    classDef lazy fill:#0b728522,stroke:#0b7285,stroke-width:1px;
+    class M always;
+    class B,R lazy;
+```
+
+In this skill's case, measured by [efaimo](https://github.com/efaimo-ai/efaimo) `weigh` (v0.5.0, 2026-09-04):
+**65 tokens always resident**, 839 when it triggers, 1,906 across 2 reference files if the agent reads to the end.
+
+<!-- /generated:pipeline -->
+
 ## See also
 
 Skills from the same set, each one a discipline that cost something to learn:
