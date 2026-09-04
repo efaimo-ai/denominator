@@ -6,6 +6,14 @@ All notable changes to denominator are documented here. Format follows
 
 ## [0.1.0] - 2026-09-04
 
+> **Not on npm at the time of writing.** The `v0.1.0` tag fired the release
+> workflow on 2026-09-04 and npm answered `404 PUT /denominator`: trusted
+> publishing is configured from an existing package's settings page, so it
+> cannot create a package that has never been published. The first publish has
+> to come from an authenticated session and will therefore carry no provenance;
+> every version after it will. Until then, run it with
+> `npx -y github:efaimo-ai/denominator`.
+
 First release. A skill and a CLI for the same idea: a check that passes reports
 a numerator, and the denominator it found that numerator over is rarely printed
 and rarely stable.
