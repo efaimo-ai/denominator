@@ -65,7 +65,7 @@ test("harvest flags one run that reports two counts for one label", () => {
 
 test("a custom pattern can wrap a tool that already prints a count", () => {
   const out = "OK  routes checked: 7\nOK  files checked: 12";
-  const re = /^OK\s+(?<label>.+?) checked: (?<n>\d+)$/;
+  const re = /^OK\s+(?<label>\S.*?) checked: (?<n>\d+)$/;
   const { counts } = harvest(out, re);
   assert.deepEqual([...counts.entries()], [
     ["routes", 7],

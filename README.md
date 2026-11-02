@@ -259,12 +259,17 @@ the scope is watched, and it is not.
 Wrapping a tool you do not control, which already prints a count:
 
 ```sh
-npx denominator --pattern '^OK\s+(?<label>.+?) checked: (?<n>\d+)$' -- ./legacy-check
+npx denominator --pattern '^OK\s+(?<label>\S.*?) checked: (?<n>\d+)$' -- ./legacy-check
 ```
 
 That mode is strictly worse than emitting the marker, because you are parsing
 prose nobody promised to keep stable. It exists for the case where changing the
 tool is not yours to do.
+
+Start the label with `\S`. Written as `.+?`, a label can begin with a space, so
+`\s+` and the label can split a run of spaces many ways, and a line of 40,000
+spaces with no count takes about 370 ms to reject. With `\S` there is one split
+and the same line is rejected at once.
 
 ---
 
