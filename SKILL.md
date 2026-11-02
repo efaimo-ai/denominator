@@ -4,7 +4,7 @@ description: Use when a check, test, lint, or audit comes back passing and you a
 license: Apache-2.0
 metadata:
   version: "0.1.0"
-  homepage: "https://efaimo.ai"
+  homepage: "https://efaimo.com"
   verified_against: "2026-09-04"
 ---
 
@@ -100,7 +100,7 @@ no ability to fail is still worthless.
 
 ## Siblings
 
-Every skill in this set is about a report that was true about the wrong thing. The set: https://efaimo.ai/skills
+Every skill in this set is about a report that was true about the wrong thing. The set: https://efaimo.com/skills
 
 - `red-before-green` - first make sure the check can fail at all; the right denominator on a check that cannot go red is still worthless.
 - `claim-sweep` - when a scope shrank because a fact moved and something stopped matching it.

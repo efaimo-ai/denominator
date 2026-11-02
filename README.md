@@ -456,7 +456,7 @@ graph TD
 ```
 
 Each edge is a real handoff, not a category: the reason one skill points at
-another is written into it at [efaimo.ai/skills](https://efaimo.ai/skills), and
+another is written into it at [efaimo.com/skills](https://efaimo.com/skills), and
 in the `Siblings` section of every `SKILL.md`. All of them are graded and
 weighed by [`efaimo`](https://github.com/efaimo-ai/efaimo), the CLI that measures
 what an agent loads.
