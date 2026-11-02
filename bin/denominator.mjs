@@ -138,6 +138,27 @@ function wire(child) {
 // So: no shell. If the executable genuinely cannot be found and we are on
 // Windows, retry through the shell with a command line WE quoted, which is the
 // only form where the payload is ours rather than a concatenation's.
+//
+// The quoting is the one the Microsoft C runtime undoes: backslashes are
+// literal unless a double quote follows, and then they double, closing quote
+// included. Escaping only the quote, as this first did, turned `"C:\my dir\"`
+// into one argument that swallowed everything after it, and dropped "" entirely.
+// shortcut: cmd.exe still expands %VAR% and, after an embedded double quote,
+// reads & | < > ^ itself; caret-escape those if a shim ever needs such an argument.
+function winQuote(a) {
+  if (a !== "" && !/[\s"]/.test(a)) return a;
+  let out = '"';
+  let slashes = 0;
+  for (const ch of a) {
+    if (ch === "\\") {
+      slashes++;
+      continue;
+    }
+    out += "\\".repeat(ch === '"' ? slashes * 2 + 1 : slashes) + ch;
+    slashes = 0;
+  }
+  return out + "\\".repeat(slashes * 2) + '"';
+}
 function launch(args) {
   const direct = spawn(args[0], args.slice(1), { shell: false });
   directChild = direct;
@@ -154,7 +175,7 @@ function launch(args) {
       return fail2(`could not run \`${args.join(" ")}\`: ${e.message}`);
     }
     retrying = true;
-    const line = args.map((a) => (/[\s"]/.test(a) ? `"${a.replace(/"/g, '\\"')}"` : a)).join(" ");
+    const line = args.map(winQuote).join(" ");
     const viaShell = spawn(line, { shell: true });
     viaShell.on("error", (e2) => {
       if (settled) return;

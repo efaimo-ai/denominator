@@ -115,6 +115,19 @@ test("a command that declares nothing is exit 1, not a pass", () => {
   rmSync(dir, { recursive: true, force: true });
 });
 
+test("a Windows shim gets its arguments back exactly as given", { skip: process.platform !== "win32" }, () => {
+  // A bare name that only resolves as a .cmd is the one path that goes through
+  // cmd.exe, so this is the one place our own quoting can be wrong.
+  const dir = mkdtempSync(join(tmpdir(), "denom-"));
+  writeFileSync(join(dir, "argv.mjs"), "console.log('ARGV ' + JSON.stringify(process.argv.slice(2)));");
+  writeFileSync(join(dir, "echoargs.cmd"), `@"${process.execPath}" "%~dp0argv.mjs" %*\r\n`);
+  const pathKey = Object.keys(process.env).find((k) => k.toUpperCase() === "PATH") ?? "PATH";
+  const args = ["C:\\my dir\\", 'say "hi"', "", "a\\\\b c", "plain"];
+  const r = run(["--", "echoargs", ...args], { env: { [pathKey]: `${dir};${process.env[pathKey]}` }, cwd: dir });
+  assert.ok(r.stdout.includes(`ARGV ${JSON.stringify(args)}`), r.out);
+  rmSync(dir, { recursive: true, force: true });
+});
+
 test("a command that cannot be run is exit 2, not a pass", () => {
   const dir = withBaseline({ anything: 1 });
   const r = run(["--", join(dir, "no-such-binary-here")], { cwd: dir });

@@ -45,6 +45,16 @@ test("harvest reads grouped digits and ignores a bare number", () => {
   assert.equal(harvest("n=5").counts.size, 0);
 });
 
+test("a long run of spaces is rejected in linear time, not quadratic", () => {
+  const line = "denominator: x" + " ".repeat(200_000) + "y";
+  const t = performance.now();
+  assert.deepEqual(harvest(line).malformed, [line.trim()]);
+  // The lazy form took about 15 s on this line; anything near a second is the regression.
+  assert.ok(performance.now() - t < 500, `took ${Math.round(performance.now() - t)} ms`);
+  // A label may still end on a non-breaking space; only space and tab separate.
+  assert.equal(harvest("denominator: a\u00a0 n=2").counts.get("a"), 2);
+});
+
 test("harvest flags one run that reports two counts for one label", () => {
   const { counts, duplicates } = harvest("denominator: files n=3\ndenominator: files n=4");
   assert.deepEqual(duplicates, ["files"]);

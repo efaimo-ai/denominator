@@ -19,8 +19,13 @@
  *
  * The label is everything between the marker and the count, so it may contain
  * spaces. `n=` is the terminator, which is why it comes last.
+ *
+ * The label has to end on something other than a space or tab. The first form,
+ * a lazy `\S.*?`, matched the same lines but could hand any run of spaces to
+ * either the label or the separator, so a line of 40,000 spaces with no `n=`
+ * took 600 ms to reject and four times the spaces took sixteen times as long.
  */
-export const MARKER = /^[ \t]*denominator:[ \t]+(?<label>\S.*?)[ \t]+n=(?<n>\d[\d,]*)[ \t]*$/;
+export const MARKER = /^[ \t]*denominator:[ \t]+(?<label>\S(?:.*[^ \t])?)[ \t]+n=(?<n>\d[\d,]*)[ \t]*$/;
 
 /** Build the line a check should print. Use this instead of hand-writing it. */
 export function declare(label, n) {
