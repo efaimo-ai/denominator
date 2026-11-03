@@ -19,10 +19,12 @@ First release. A skill and a CLI for the same idea: a check that passes reports
 a numerator, and the denominator it found that numerator over is rarely printed
 and rarely stable.
 
+<!-- until-published -->
 The `v0.1.0` tag exists and fired the release workflow on 2026-09-04; npm
 answered `404 PUT /denominator`, which is the failure described above and not a
 transient one. The tag stays where it is and the entry above stays open until a
 publish actually lands.
+<!-- /until-published -->
 
 ### Added
 

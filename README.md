@@ -76,7 +76,9 @@ the output only ever described the numerator.
 
 ## Install
 
+<!-- until-published -->
 Not on npm yet, so both forms name the repository:
+<!-- /until-published -->
 
 ```sh
 npx -y --allow-git=all github:efaimo-ai/denominator --help   # run it, install nothing
@@ -87,6 +89,7 @@ Every example below writes `npx denominator`, which is what you type after the
 second line: `npx` finds the local binary in `node_modules/.bin` before it asks
 the registry. That part needs no flag and works on npm 11 and 12 alike.
 
+<!-- until-published -->
 `--allow-git=all` is on the two lines above because **npm 12 refuses git specs
 by default** and answers `EALLOWGIT`, and a narrower `--allow-git=<spec>` is
 refused too. Nobody should enjoy typing it: it switches off a protection npm
@@ -120,6 +123,8 @@ Saying so here is cheaper than having someone find a missing attestation and
 wonder what else is missing.
 
 </details>
+
+<!-- /until-published -->
 
 ## Quickstart
 
@@ -411,7 +416,7 @@ flowchart LR
     class B,R lazy;
 ```
 
-In this skill's case, measured by [efaimo](https://github.com/efaimo-ai/efaimo) `weigh` (v0.5.0, 2026-09-04):
+In this skill's case, measured by [efaimo](https://github.com/efaimo-ai/efaimo) `weigh` (v0.6.0, 2026-11-02):
 **65 tokens always resident**, 1,012 when it triggers, 1,906 across 2 reference files if the agent reads to the end.
 
 <!-- /generated:pipeline -->

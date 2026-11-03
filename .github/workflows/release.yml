@@ -66,9 +66,16 @@ jobs:
             echo "release $GITHUB_REF_NAME already exists; leaving it alone"
             exit 0
           fi
+          # The "Not published yet" note is true until the publish and false on
+          # a Release page, so it never goes into the notes. The commit before
+          # the tag should already have dropped it (skill-pkg/prepare-release.mjs
+          # in the efaimo workspace).
           awk -v v="${GITHUB_REF_NAME#v}" '
             $0 ~ "^## \\[" v "\\]" { f = 1; next }
             f && (/^## \[/ || /^\[[^]]*\]: http/) { exit }
+            f && /^> \*\*Not published yet\./ { q = 1; next }
+            q && /^>/ { next }
+            { q = 0 }
             f { print }
           ' CHANGELOG.md > "$RUNNER_TEMP/notes.md"
           if grep -q '[^[:space:]]' "$RUNNER_TEMP/notes.md"; then
