@@ -18,7 +18,7 @@ check(ctx) {
 ```
 
 **Case.** A linter for MCP servers has a rule that warns when a project depends
-on the pre-2026-07-28 SDK line. Its published self-audit runs against a spawned
+on an outdated SDK line. Its published self-audit runs against a spawned
 command rather than a source tree, so `ctx.repo` is undefined, the rule returns
 `[]`, and the run prints `0 errors 0 warnings 0 info / no quality findings.
 clean.` The project did depend on that SDK line. Pointing the same command at

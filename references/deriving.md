@@ -63,7 +63,7 @@ A baseline that changes without a sentence is a baseline nobody can audit. The
 `--why` is not ceremony:
 
 ```
-"why": "read-back joined the skill set, so the carrier count is 3 not 2"
+"why": "the docs/api folder was added, so the link check covers 41 files, not 33"
 ```
 
 is a reason. "update baseline" is a shrug. Six months later the only question

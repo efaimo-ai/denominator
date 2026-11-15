@@ -50,6 +50,19 @@ publish actually lands.
 - **The skill.** `SKILL.md` plus `references/failures.md` (the taxonomy, each
   entry with a case that actually happened) and `references/deriving.md` (how to
   get an expected count that cannot agree with the bug).
+- **The skill runs the ratchet without npm.** The CLI and the library live in
+  `scripts/denominator.mjs` and `scripts/denominator-lib.mjs`, and `SKILL.md`
+  calls them as `${CLAUDE_SKILL_DIR}/scripts/denominator.mjs`, so a copy of the
+  skill folder carries a working tool. `bin/denominator.mjs` and
+  `src/index.mjs` stay as one-line entry points for `npx denominator` and
+  `import "denominator"`. `--version` says "unknown" in a copy that has no
+  package.json of its own. A test copies the skill folder alone and runs a
+  bless and a verify from it.
+- **When it fires.** The description is about checks that run over a set (a
+  glob, a walker, a list, a CI matrix) and leaves "can this check fail at all"
+  to `red-before-green`.
+- **Counting with common tools**: pytest, jest, eslint, tsc, ripgrep and a CI
+  matrix, each with the flag that prints how many it examined.
 
 ### Fixed before it shipped
 

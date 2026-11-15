@@ -89,6 +89,11 @@ Every example below writes `npx denominator`, which is what you type after the
 second line: `npx` finds the local binary in `node_modules/.bin` before it asks
 the registry. That part needs no flag and works on npm 11 and 12 alike.
 
+As an Agent Skill the folder is the tool. Copy `SKILL.md`, `references/`,
+`scripts/denominator.mjs` and `scripts/denominator-lib.mjs` into
+`.claude/skills/denominator/`, keeping that layout, and `SKILL.md` runs
+`scripts/denominator.mjs` from there with Node 20 or later. No npm is involved.
+
 <!-- until-published -->
 `--allow-git=all` is on the two lines above because **npm 12 refuses git specs
 by default** and answers `EALLOWGIT`, and a narrower `--allow-git=<spec>` is
@@ -403,7 +408,7 @@ ever fires.
 
 ```mermaid
 flowchart LR
-    N["cp SKILL.md .claude/skills/denominator/"] --> D[/".claude/skills/denominator/"/]
+    N["copy SKILL.md, references/ and the two scripts/ files"] --> D[/".claude/skills/denominator/"/]
     D --> M["frontmatter<br/><b>every session, always</b>"]
     D --> B["SKILL.md body<br/><i>only when it triggers</i>"]
     D --> R["references/<br/><i>only if the agent reads them</i>"]

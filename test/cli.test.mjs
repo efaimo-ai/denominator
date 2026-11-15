@@ -4,7 +4,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { mkdtempSync, readFileSync, writeFileSync, rmSync } from "node:fs";
+import { mkdtempSync, readFileSync, writeFileSync, rmSync, cpSync, existsSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -178,4 +178,33 @@ test("--help is exit 0, a bare invocation is exit 2, both print the help", () =>
   const bare = run([]);
   assert.equal(bare.status, 2, bare.out);
   assert.match(bare.stdout, /usage:/);
+});
+
+// SKILL.md runs the ratchet as `${CLAUDE_SKILL_DIR}/scripts/...`, so a copy of
+// the skill folder alone, with no npm and no package.json, has to carry it.
+test("the skill folder runs the ratchet on its own, without npm or a package.json", () => {
+  const root = join(HERE, "..");
+  const skill = readFileSync(join(root, "SKILL.md"), "utf8");
+  const named = [...new Set([...skill.matchAll(/\$\{CLAUDE_SKILL_DIR\}\/([^"\s]+)/g)].map((m) => m[1]))];
+  assert.ok(named.length > 0, "SKILL.md names no script under ${CLAUDE_SKILL_DIR}, so nothing was checked");
+  const shipped = JSON.parse(readFileSync(join(root, "package.json"), "utf8")).files;
+
+  const dir = mkdtempSync(join(tmpdir(), "denom-skill-"));
+  for (const rel of ["SKILL.md", "references", "scripts/denominator.mjs", "scripts/denominator-lib.mjs"]) {
+    cpSync(join(root, rel), join(dir, rel), { recursive: true });
+  }
+  for (const p of named) {
+    assert.ok(existsSync(join(root, p)), `${p} is named in SKILL.md and missing from the repo`);
+    assert.ok(shipped.some((f) => p === f || p.startsWith(`${f}/`)), `${p} is named in SKILL.md and not in package.json files`);
+    assert.ok(existsSync(join(dir, p)), `${p} is not in a copy of the skill folder`);
+  }
+
+  const cli = join(dir, "scripts", "denominator.mjs");
+  const go = (args) => spawnSync(process.execPath, [cli, ...args], { cwd: dir, encoding: "utf8" });
+  const bless = go(["--bless", "--why", "test", "--", process.execPath, FIXTURE]);
+  assert.equal(bless.status, 0, bless.stdout + bless.stderr);
+  const verify = go(["--", process.execPath, FIXTURE]);
+  assert.equal(verify.status, 0, verify.stdout + verify.stderr);
+  assert.match(go(["--version"]).stdout, /^unknown/);
+  rmSync(dir, { recursive: true, force: true });
 });

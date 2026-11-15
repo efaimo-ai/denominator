@@ -1,6 +1,6 @@
 ---
 name: denominator
-description: Use when a check, test, lint, or audit comes back passing and you are about to trust it. Green reports a numerator; the denominator, how many things were actually examined, is rarely printed and narrows on its own when a glob, walker, carrier list, or CI matrix quietly shrinks.
+description: Use when writing, reviewing or relying on a check that runs over a set of things (a test or lint glob, a file walker, a list of packages or routes, a CI matrix) where a passing result could hide that the set shrank. Print how many items each assertion examined, derive the expected set from the filesystem or config instead of a hand-kept list, treat zero as a failure, and ratchet the counts so any change fails until someone approves it with a reason. Includes a zero-dependency Node script that enforces the ratchet. Whether a check can fail at all is red-before-green.
 license: Apache-2.0
 metadata:
   version: "0.1.0"
@@ -54,14 +54,29 @@ a scope that grew from 34 to 38 and then broke back to 34 satisfies any floor
 of 34, and that is exactly how a real regression hides.
 
 ```sh
-npm i -D --allow-git=all github:efaimo-ai/denominator   # not on npm yet
-npx denominator --bless --why "first baseline" -- node check.mjs
-npx denominator -- node check.mjs       # exit 1 when a scope moves
+node "${CLAUDE_SKILL_DIR}/scripts/denominator.mjs" --bless --why "first baseline" -- node check.mjs
+node "${CLAUDE_SKILL_DIR}/scripts/denominator.mjs" -- node check.mjs   # exit 1 when a scope moves
 ```
 
-The tool is optional. The wire format is one `printf` and the ratchet is a
-committed JSON file, so a project that does not want a dependency can implement
-both in an afternoon; the discipline is the part that matters.
+The script needs Node 20 or later and nothing else (where the variable is not
+substituted, it sits at `scripts/denominator.mjs` next to this file). It runs
+the command after `--` with your permissions, so treat it like running that
+command yourself. The baseline is `denominators.json` in the working
+directory.
+
+This copy lives with the skill, not on a CI runner. To ratchet in CI, copy
+`scripts/denominator.mjs` and `scripts/denominator-lib.mjs` into one folder of
+the repository, keep the LICENSE and NOTICE beside them, and call
+`node <folder>/denominator.mjs -- <your check>`.
+
+<!-- until-published -->
+An npm package of the same name is planned and not published yet, so nothing
+here installs from npm.
+<!-- /until-published -->
+
+The tool is optional. The wire format is one line of output and the ratchet is
+a committed JSON file, so a project that wants no extra files can implement
+both itself; the discipline is the part that matters.
 
 ## Six ways a green check lies about its scope
 
@@ -74,6 +89,17 @@ both in an afternoon; the discipline is the part that matters.
   removed, or silently skipped, and nothing else will notice.
 - **moved** - the count changed. Down is a regression. Up wants a sentence.
 
+## Getting the count from common tools
+
+| tool | how many it examined |
+|---|---|
+| pytest | `pytest --collect-only -q`, last line `N tests collected` |
+| jest | `jest --listTests`, one test file per line |
+| eslint | `eslint -f json <paths>`, one array entry per file linted |
+| tsc | `tsc --listFilesOnly -p .`, one file per line (filter out `node_modules` and the lib files) |
+| ripgrep | `rg --files -g '<glob>'`, the files a search over that glob reads |
+| CI matrix | the matrix in the workflow file against the jobs in the run summary |
+
 ## Do this
 
 1. Run the check. Read its output for counts it already prints.
@@ -82,7 +108,8 @@ both in an afternoon; the discipline is the part that matters.
 3. Derive the expected set independently where you can: read the directory, not
    the array; read the workflow file, not your memory of it.
 4. Bless a baseline with a reason. Commit it.
-5. Wire the run into CI. When a count moves, fix the check or bless the change.
+5. Wire the run into CI (copy the two scripts, as above). When a count moves,
+   fix the check or bless the change.
 
 ## When not to use this
 
