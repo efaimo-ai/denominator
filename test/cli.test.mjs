@@ -189,10 +189,10 @@ test("the skill folder runs the ratchet on its own, without npm or a package.jso
   assert.ok(named.length > 0, "SKILL.md names no script under ${CLAUDE_SKILL_DIR}, so nothing was checked");
   const shipped = JSON.parse(readFileSync(join(root, "package.json"), "utf8")).files;
 
+  // Copy what npm would publish (package.json `files`), not a list kept here,
+  // so a module dropped from `files` is missing from the copy and the run fails.
   const dir = mkdtempSync(join(tmpdir(), "denom-skill-"));
-  for (const rel of ["SKILL.md", "references", "scripts/denominator.mjs", "scripts/denominator-lib.mjs"]) {
-    cpSync(join(root, rel), join(dir, rel), { recursive: true });
-  }
+  for (const rel of shipped) cpSync(join(root, rel), join(dir, rel), { recursive: true });
   for (const p of named) {
     assert.ok(existsSync(join(root, p)), `${p} is named in SKILL.md and missing from the repo`);
     assert.ok(shipped.some((f) => p === f || p.startsWith(`${f}/`)), `${p} is named in SKILL.md and not in package.json files`);
