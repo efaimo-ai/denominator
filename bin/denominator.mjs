@@ -132,7 +132,7 @@ function wire(child) {
 // are "not escaped, only concatenated". The very first CLI test spawned
 // `process.execPath`, which on that machine is `C:\Program Files\nodejs\node.exe`,
 // so the shell received `C:\Program` as the command and ten tests went red at
-// once. That is precisely the failure `read-back` is about, arriving inside the
+// once. That is precisely the failure `read-it-back` is about, arriving inside the
 // tool whose whole job is to notice when a check stopped covering what you think.
 //
 // So: no shell. If the executable genuinely cannot be found and we are on

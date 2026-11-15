@@ -386,7 +386,7 @@ arguments are "not escaped, only concatenated". The first CLI test spawned
 `process.execPath`, which on the author's machine is `C:\Program Files\nodejs\node.exe`,
 and the shell received `C:\Program` as the command. Ten tests went red at once.
 
-That is exactly the failure [`read-back`](https://github.com/efaimo-ai/read-back)
+That is exactly the failure [`read-it-back`](https://github.com/efaimo-ai/read-back)
 is about, arriving inside the tool whose job is to notice when a check stopped
 covering what you think. It now spawns without a shell, and retries through one
 only for a bare command name, with a command line it quoted itself.
@@ -431,7 +431,7 @@ Every skill in this set is about a report that was true about the wrong thing.
 |---|---|---|
 | [`red-before-green`](https://github.com/efaimo-ai/red-before-green) | a check said clean | whether it ran at all |
 | **`denominator`** | a check said clean | how much of the world it saw |
-| [`read-back`](https://github.com/efaimo-ai/read-back) | a write said done | whether it applied |
+| [`read-it-back`](https://github.com/efaimo-ai/read-back) | a write said done | whether it applied |
 | [`claim-sweep`](https://github.com/efaimo-ai/claim-sweep) | a change said done | everything else still asserting the old value |
 | [`unreleased-guard`](https://github.com/efaimo-ai/unreleased-guard) | a document said true | which version it is true of |
 | [`honest-chart`](https://github.com/efaimo-ai/honest-chart) | a picture said the data | whether its geometry is proportional |
@@ -442,21 +442,21 @@ Every skill in this set is about a report that was true about the wrong thing.
 graph TD
     red_before_green["red-before-green"]
     denominator["denominator"]
-    read_back["read-back"]
+    read_it_back["read-it-back"]
     claim_sweep["claim-sweep"]
     unreleased_guard["unreleased-guard"]
     honest_chart["honest-chart"]
     mcp_stateless_migration["mcp-stateless-migration"]
     efaimo["efaimo"]
     red_before_green --- denominator
-    red_before_green --- read_back
+    red_before_green --- read_it_back
     denominator --- claim_sweep
-    read_back --- claim_sweep
+    read_it_back --- claim_sweep
     claim_sweep --- red_before_green
     claim_sweep --- unreleased_guard
     unreleased_guard --- red_before_green
     honest_chart --- red_before_green
-    honest_chart --- read_back
+    honest_chart --- read_it_back
     mcp_stateless_migration --- unreleased_guard
     mcp_stateless_migration --- red_before_green
     efaimo --- denominator
