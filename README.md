@@ -45,19 +45,31 @@ The check is not wrong. It is *smaller*. That is the entire idea.
 
 ## The shape of the failure
 
-```mermaid
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/efaimo-ai/denominator/main/assets/diagram-cceee9267e-dark.png">
+  <img alt="On day 1 three files carry the value and the check reads all three. On day 40 a fourth file is added and the check still reads three. On day 41 one of the four goes stale and the check passes." src="https://raw.githubusercontent.com/efaimo-ai/denominator/main/assets/diagram-cceee9267e-light.png" width="928">
+</picture>
+
+<details>
+<summary>Mermaid source</summary>
+
+```text
 flowchart LR
+    accDescr: On day 1 three files carry the value and the check reads all three. On day 40 a fourth file is added and the check still reads three. On day 41 one of the four goes stale and the check passes.
     subgraph T0["day 1"]
+        direction TB
         W0["world<br/>3 files carry the value"]
         C0["check<br/>reads 3"]
         W0 --- C0
     end
     subgraph T1["day 40, a file is added"]
+        direction TB
         W1["world<br/>4 files carry the value"]
         C1["check<br/>still reads 3"]
         W1 --- C1
     end
     subgraph T2["day 41"]
+        direction TB
         V["one of the 4 goes stale"]
         G["check: PASS"]
         V --- G
@@ -68,6 +80,8 @@ flowchart LR
     class W0,C0,W1 ok;
     class C1,V,G bad;
 ```
+
+</details>
 
 The world grows. The check's reach does not. Nothing in the output moves, because
 the output only ever described the numerator.
@@ -166,8 +180,17 @@ denominator: 11 declared scope(s) match the baseline, 103 things examined in tot
 It wraps your check. It does not parse your code, does not instrument your
 runtime, and does not need to know what your check does.
 
-```mermaid
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/efaimo-ai/denominator/main/assets/diagram-201eef44f2-dark.png">
+  <img alt="Your check's output goes through a tee, unchanged to your terminal or CI log, and as a copy to the harvest of denominator lines, which is compared with the committed baseline in denominators.json. The verdict is exit 0 when every scope matches, exit 1 when a count moved or is missing, zero, unblessed or malformed, and exit 2 when nothing was declared, there is no baseline, or the flags are bad." src="https://raw.githubusercontent.com/efaimo-ai/denominator/main/assets/diagram-201eef44f2-light.png" width="781">
+</picture>
+
+<details>
+<summary>Mermaid source</summary>
+
+```text
 flowchart TD
+    accDescr: Your check's output goes through a tee, unchanged to your terminal or CI log, and as a copy to the harvest of denominator lines, which is compared with the committed baseline in denominators.json. The verdict is exit 0 when every scope matches, exit 1 when a count moved or is missing, zero, unblessed or malformed, and exit 2 when nothing was declared, there is no baseline, or the flags are bad.
     A["your check<br/><i>any language, any runtime</i>"] -->|"stdout + stderr"| B{{"tee"}}
     B -->|"unchanged"| U["your terminal / CI log"]
     B -->|"copy"| H["harvest<br/><code>denominator: LABEL n=INT</code>"]
@@ -185,6 +208,8 @@ flowchart TD
     class E2 warn;
 ```
 
+</details>
+
 Three exit codes, not two, on purpose. **"A scope moved"** and **"I could not
 measure this run at all"** are different answers, and collapsing them is how a
 broken harness reads as a clean tree.
@@ -196,8 +221,17 @@ on its own terms, you get the check's code, not a zero.
 
 ## The verdicts
 
-```mermaid
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/efaimo-ai/denominator/main/assets/diagram-ba1184bece-dark.png">
+  <img alt="The order of the verdict after a run. No declarations, a marker line that fails to parse, a count of zero, a baseline label the run never printed, and a label the baseline has never seen each fail. A count that went down fails, one that went up fails unless it is a floor, and an unchanged count passes." src="https://raw.githubusercontent.com/efaimo-ai/denominator/main/assets/diagram-ba1184bece-light.png" width="1198">
+</picture>
+
+<details>
+<summary>Mermaid source</summary>
+
+```text
 flowchart TD
+    accDescr: The order of the verdict after a run. No declarations, a marker line that fails to parse, a count of zero, a baseline label the run never printed, and a label the baseline has never seen each fail. A count that went down fails, one that went up fails unless it is a floor, and an unchanged count passes.
     S["run finished"] --> Q1{"any declarations?"}
     Q1 -->|"no"| F1["<b>nothing declared</b><br/>silence is not agreement"]
     Q1 -->|"yes"| Q2{"any line starts with the<br/>marker and fails to parse?"}
@@ -218,6 +252,8 @@ flowchart TD
     class P pass;
     class F1,F2,F3,F4,F5,F6,F7 fail;
 ```
+
+</details>
 
 | verdict | what happened | why it is not a pass |
 |---|---|---|
@@ -406,8 +442,17 @@ A skill is not free just because it is markdown. Its frontmatter is loaded at
 the start of every session for every skill you have installed, whether or not it
 ever fires.
 
-```mermaid
-flowchart LR
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/efaimo-ai/denominator/main/assets/diagram-3da0bb2bd5-dark.png">
+  <img alt="Installing puts SKILL.md and references/ in .claude/skills/denominator/. The frontmatter enters your context window in every session, the body only when the skill triggers, and the references only if the agent reads them." src="https://raw.githubusercontent.com/efaimo-ai/denominator/main/assets/diagram-3da0bb2bd5-light.png" width="756">
+</picture>
+
+<details>
+<summary>Mermaid source</summary>
+
+```text
+flowchart TD
+    accDescr: Installing puts SKILL.md and references/ in .claude/skills/denominator/. The frontmatter enters your context window in every session, the body only when the skill triggers, and the references only if the agent reads them.
     N["copy SKILL.md, references/ and the two scripts/ files"] --> D[/".claude/skills/denominator/"/]
     D --> M["frontmatter<br/><b>every session, always</b>"]
     D --> B["SKILL.md body<br/><i>only when it triggers</i>"]
@@ -420,6 +465,8 @@ flowchart LR
     class M always;
     class B,R lazy;
 ```
+
+</details>
 
 In this skill's case, measured by [efaimo](https://github.com/efaimo-ai/efaimo) `weigh` (v0.6.0, 2026-11-02):
 **65 tokens always resident**, 1,012 when it triggers, 1,906 across 2 reference files if the agent reads to the end.
@@ -443,8 +490,17 @@ Every skill in this set is about a report that was true about the wrong thing.
 | [`mcp-stateless-migration`](https://github.com/efaimo-ai/mcp-stateless-migration) | a server said ok | which revision it speaks |
 | [`efaimo`](https://github.com/efaimo-ai/efaimo) | a tool said A(100) | what a grade certifies, and what it costs |
 
-```mermaid
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/efaimo-ai/denominator/main/assets/diagram-213aab670a-dark.png">
+  <img alt="Every skill in the set and the efaimo CLI, with an edge for each handoff between two of them. denominator is highlighted." src="https://raw.githubusercontent.com/efaimo-ai/denominator/main/assets/diagram-213aab670a-light.png" width="758">
+</picture>
+
+<details>
+<summary>Mermaid source</summary>
+
+```text
 graph TD
+    accDescr: Every skill in the set and the efaimo CLI, with an edge for each handoff between two of them. denominator is highlighted.
     red_before_green["red-before-green"]
     denominator["denominator"]
     read_it_back["read-it-back"]
@@ -469,6 +525,8 @@ graph TD
     classDef self fill:#0b728533,stroke:#0b7285,stroke-width:2px;
     class denominator self;
 ```
+
+</details>
 
 Each edge is a real handoff, not a category: the reason one skill points at
 another is written into it at [efaimo.com/skills](https://efaimo.com/skills), and
