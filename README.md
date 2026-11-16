@@ -347,7 +347,7 @@ project's siblings are graded by:
 
 ```
 $ npx efaimo check --skill ./denominator
-efaimo v0.6.1
+efaimo v0.6.2
 check skill  denominator
 grade A (100)   0 errors  0 warnings  0 info
 
@@ -356,7 +356,7 @@ grade A (100)   0 errors  0 warnings  0 info
 rules: https://github.com/efaimo-ai/efaimo/blob/main/docs/RULES.md
 
 $ npx efaimo weigh ./denominator
-efaimo v0.6.1
+efaimo v0.6.2
 weigh skills  ./denominator   1 skill
 
   skill                        metadata      body  lines  refs
@@ -368,7 +368,7 @@ note: metadata loads at session start for every installed skill; body loads on t
 note: token counts are o200k_base estimates (see docs/METHODOLOGY.md)
 ```
 
-Captured from `efaimo@0.6.1` on 2026-11-16. The only edit is the absolute path
+Captured from `efaimo@0.6.2` on 2026-11-16. The only edit is the absolute path
 `weigh` echoes back, replaced with the relative one that was typed.
 
 **128 tokens sit in your context whether or not this skill ever fires.** That
@@ -433,7 +433,7 @@ flowchart TD
 
 </details>
 
-In this skill's case, measured by [efaimo](https://github.com/efaimo-ai/efaimo) `weigh` (v0.6.1, 2026-11-16):
+In this skill's case, measured by [efaimo](https://github.com/efaimo-ai/efaimo) `weigh` (v0.6.2, 2026-11-16):
 **128 tokens always resident**, 1,314 when it triggers, 7,122 across 4 reference files if the agent reads to the end.
 
 <!-- /generated:pipeline -->
