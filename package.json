@@ -1,6 +1,6 @@
 {
   "name": "denominator",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A passing check has a denominator. Print it, derive it, and fail when it moves.",
   "type": "module",
   "license": "Apache-2.0",

@@ -3,7 +3,7 @@ name: denominator
 description: Use when writing, reviewing or relying on a check that runs over a set of things (a test or lint glob, a file walker, a list of packages or routes, a CI matrix) where a passing result could hide that the set shrank. Print how many items each assertion examined, derive the expected set from the filesystem or config instead of a hand-kept list, treat zero as a failure, and ratchet the counts so any change fails until someone approves it with a reason. Includes a zero-dependency Node script that enforces the ratchet. Whether a check can fail at all is red-before-green.
 license: Apache-2.0
 metadata:
-  version: "0.1.0"
+  version: "0.1.1"
   homepage: "https://efaimo.com"
   verified_against: "2026-09-04"
 ---
