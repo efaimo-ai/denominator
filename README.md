@@ -90,13 +90,9 @@ the output only ever described the numerator.
 
 ## Install
 
-<!-- until-published -->
-Not on npm yet, so both forms name the repository:
-<!-- /until-published -->
-
 ```sh
-npx -y --allow-git=all github:efaimo-ai/denominator --help   # run it, install nothing
-npm i -D --allow-git=all github:efaimo-ai/denominator        # or put it in a project
+npx denominator --help   # run it, install nothing
+npm i -D denominator        # or put it in a project
 ```
 
 Every example below writes `npx denominator`, which is what you type after the
@@ -107,43 +103,6 @@ As an Agent Skill the folder is the tool. Copy `SKILL.md`, `references/`,
 `scripts/denominator.mjs` and `scripts/denominator-lib.mjs` into
 `.claude/skills/denominator/`, keeping that layout, and `SKILL.md` runs
 `scripts/denominator.mjs` from there with Node 20 or later. No npm is involved.
-
-<!-- until-published -->
-`--allow-git=all` is on the two lines above because **npm 12 refuses git specs
-by default** and answers `EALLOWGIT`, and a narrower `--allow-git=<spec>` is
-refused too. Nobody should enjoy typing it: it switches off a protection npm
-added on purpose. It is here because the alternative is a command that does not
-run, and it goes away the moment this package is on npm, where `npx denominator`
-needs no flag on either major.
-
-Both lines were run end to end against npm 11.6.2 and npm 12.0.2 on 2026-09-05.
-The bare form, without the flag, was published here on 2026-09-04 and fails on
-12 - it was checked once, on the npm that happened to be installed, and shipped
-as though that were every npm.
-
-<details>
-<summary>Why it is not on npm yet, and what the v0.1.0 tag is doing there</summary>
-
-npm's trusted publishing is configured from an existing package's settings page,
-so it cannot create a package that has never been published. The `v0.1.0` tag
-fired the release workflow on 2026-09-04 and npm answered
-`404 Not Found - PUT https://registry.npmjs.org/denominator`: not a permissions
-failure, an ordering one. The first publish has to come from an authenticated
-session, and that session cannot mint an OIDC attestation, so the first version
-on npm will be the only one without provenance and every version after it will
-have one.
-
-The tag is still there and the release is still not cut, which is the honest
-state and not an oversight: cutting a GitHub Release by hand stamps an
-operator's personal account onto a public page that cannot be edited afterwards,
-so the workflow does it or nobody does.
-
-Saying so here is cheaper than having someone find a missing attestation and
-wonder what else is missing.
-
-</details>
-
-<!-- /until-published -->
 
 ## Quickstart
 

@@ -69,11 +69,6 @@ This copy lives with the skill, not on a CI runner. To ratchet in CI, copy
 the repository, keep the LICENSE and NOTICE beside them, and call
 `node <folder>/denominator.mjs -- <your check>`.
 
-<!-- until-published -->
-An npm package of the same name is planned and not published yet, so nothing
-here installs from npm.
-<!-- /until-published -->
-
 The tool is optional. The wire format is one line of output and the ratchet is
 a committed JSON file, so a project that wants no extra files can implement
 both itself; the discipline is the part that matters.
