@@ -347,33 +347,39 @@ project's siblings are graded by:
 
 ```
 $ npx efaimo check --skill ./denominator
-efaimo v0.5.0
+efaimo v0.6.1
 check skill  denominator
 grade A (100)   0 errors  0 warnings  0 info
 
   no findings. clean.
 
+rules: https://github.com/efaimo-ai/efaimo/blob/main/docs/RULES.md
+
 $ npx efaimo weigh ./denominator
-efaimo v0.5.0
+efaimo v0.6.1
 weigh skills  ./denominator   1 skill
 
   skill                        metadata      body  lines  refs
-  denominator                        65     1,012     99  2 files 1,906
+  denominator                       128     1,314    121  4 files 7,122
 
-totals: metadata 65 (always loaded) | body 1,012 (on trigger) | referenced 1,906 (on demand)
+totals: metadata 128 (always loaded) | body 1,314 (on trigger) | referenced 7,122 (on demand)
+
+note: metadata loads at session start for every installed skill; body loads on trigger; referenced files load on demand
+note: token counts are o200k_base estimates (see docs/METHODOLOGY.md)
 ```
 
-Captured from `efaimo@0.5.0` on 2026-09-04. The only edit is the absolute path
+Captured from `efaimo@0.6.1` on 2026-11-16. The only edit is the absolute path
 `weigh` echoes back, replaced with the relative one that was typed.
 
-**65 tokens sit in your context whether or not this skill ever fires.** That is
-the number this skill's own family measures, so it is the number to be honest
-about: it is the lightest of the seven skills efaimo ai publishes, and it is
-still well above the corpus median of 38.5 across the 36 public skills efaimo
+**128 tokens sit in your context whether or not this skill ever fires.** That
+is the number this skill's own family measures, so it is the number to be
+honest about: the description roughly doubled when the seven skills efaimo ai
+publishes were revised on 2026-11-16, it now sits in the middle of them, and it
+is well above the corpus median of 38.5 across the 36 public skills efaimo
 indexes. The description is long because a host selects skills by matching
 descriptions to tasks, and that trade is a choice, not an accident.
 
-Tests: 31, over the library and the spawned binary.
+Tests: 35, over the library and the spawned binary; one runs only on Windows.
 
 ---
 
@@ -427,8 +433,8 @@ flowchart TD
 
 </details>
 
-In this skill's case, measured by [efaimo](https://github.com/efaimo-ai/efaimo) `weigh` (v0.6.0, 2026-11-02):
-**65 tokens always resident**, 1,012 when it triggers, 1,906 across 2 reference files if the agent reads to the end.
+In this skill's case, measured by [efaimo](https://github.com/efaimo-ai/efaimo) `weigh` (v0.6.1, 2026-11-16):
+**128 tokens always resident**, 1,314 when it triggers, 7,122 across 4 reference files if the agent reads to the end.
 
 <!-- /generated:pipeline -->
 
