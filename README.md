@@ -427,7 +427,7 @@ arguments are "not escaped, only concatenated". The first CLI test spawned
 `process.execPath`, which on the author's machine is `C:\Program Files\nodejs\node.exe`,
 and the shell received `C:\Program` as the command. Ten tests went red at once.
 
-That is exactly the failure [`read-it-back`](https://github.com/efaimo-ai/read-back)
+That is exactly the failure [`read-it-back`](https://github.com/efaimo-ai/read-it-back)
 is about, arriving inside the tool whose job is to notice when a check stopped
 covering what you think. It now spawns without a shell, and retries through one
 only for a bare command name, with a command line it quoted itself.
@@ -483,7 +483,7 @@ Every skill in this set is about a report that was true about the wrong thing.
 |---|---|---|
 | [`red-before-green`](https://github.com/efaimo-ai/red-before-green) | a check said clean | whether it ran at all |
 | **`denominator`** | a check said clean | how much of the world it saw |
-| [`read-it-back`](https://github.com/efaimo-ai/read-back) | a write said done | whether it applied |
+| [`read-it-back`](https://github.com/efaimo-ai/read-it-back) | a write said done | whether it applied |
 | [`claim-sweep`](https://github.com/efaimo-ai/claim-sweep) | a change said done | everything else still asserting the old value |
 | [`unreleased-guard`](https://github.com/efaimo-ai/unreleased-guard) | a document said true | which version it is true of |
 | [`honest-chart`](https://github.com/efaimo-ai/honest-chart) | a picture said the data | whether its geometry is proportional |
